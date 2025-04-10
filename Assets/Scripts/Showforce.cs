@@ -14,7 +14,7 @@ public class Showforce : MonoBehaviour
 
         if(bam)
         {
-            rb.AddForce(Vector3.up * leap, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * leap * Time.deltaTime, ForceMode.Impulse);
         }
     }
 
