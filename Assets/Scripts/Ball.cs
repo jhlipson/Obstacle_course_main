@@ -25,12 +25,14 @@ public class Ball : MonoBehaviour
             bouncing = true; // turn on.
            
             Debug.Log("We rolling, they hatin'");
+      
             hit.rigidbody.AddForce(Vector3.up * force * Time.deltaTime, ForceMode.Impulse);
             if (bouncing)
             {
                 Bounclo();
             }
             bouncing = false;
+           
          
         }
     }
@@ -39,6 +41,7 @@ public class Ball : MonoBehaviour
     {
         
         force *= bouncemulti;
+      
 
     }
 
