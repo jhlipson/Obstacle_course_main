@@ -4,7 +4,6 @@ public class Ball : MonoBehaviour
 {
     
     public float force = 1f;
-    public float bouncemulti = 2f;
     bool bouncing;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,8 +38,8 @@ public class Ball : MonoBehaviour
 
   void Bounclo() 
     {
-        
-        force *= bouncemulti;
+
+        force += Time.deltaTime;
       
 
     }
