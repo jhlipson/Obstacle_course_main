@@ -1,14 +1,13 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;  // Fixed the typo
 public class Player : MonoBehaviour
 {
-
-    Animations An;
     PlayerAction pa;
-    public CharacterController cc;
-    public healthbar health;
+    CharacterController cc;
+   public GameObject lol; // game over baby
+   public healthbar health;
     public float speed = 1f;
-    public float TimeinGame = 0f;
     public AnimationCurve curve;
     float counter;
     Camera _cam;
@@ -27,31 +26,34 @@ public class Player : MonoBehaviour
     public float HP = 100f;
     public float currentHP;
     bool isalive = true;
-    public PlayerState state;
-    public enum PlayerState
-    {
-        Idle,
-        Jumping,
-        Running,
-        Walking,
-        Dashing,
-        Dead
-    }
+
+    bool godmode;
+
+    [SerializeField] float iFrames;
+    float iFrameCounter;
 
     void Start()
     {
-        An = FindFirstObjectByType<Animations>(); // automatically assign the animator even if it is not attachec to our gameobject.
+        Cursor.visible = false;
+
         pa = GetComponent<PlayerAction>();
         cc = GetComponent<CharacterController>();
         _cam = GetComponentInChildren<Camera>();
-        state = PlayerState.Idle;
+      
         currentHP = HP;
         health.SetMaxHealth(HP);
     }
 
     void Update()
     {
-        TimeinGame = Time.time;
+        if(Input.GetKeyDown(KeyCode.Insert))
+        {
+            godmode = !godmode;
+        }
+        if(godmode)
+        {
+            currentHP = HP; 
+        } 
         health.SetHealth(currentHP);
         // If the player is dashing, handle dash logic
         if (!isDashing)
@@ -60,29 +62,28 @@ public class Player : MonoBehaviour
         }
         else
         {
-
+            // Dash movement: move the player in the direction they're facing with speed multiplied by dash multiplier
             Vector3 dashDirection = transform.forward * dashValue; // Dash in the direction the player is facing
-            cc.Move(dashDirection * speed * dashMulti * Time.deltaTime); // evaluating ou
+            cc.Move(dashDirection * speed * dashMulti * Time.deltaTime);
 
             timeInDash += Time.deltaTime;
 
             if (timeInDash >= dashTime)
             {
                 isDashing = false;
-
-                timeInDash = 0;
+             
+                timeInDash = 0;   
             }
         }
-        if (currentHP <= 0)
+        if(currentHP <= 0)
         {
             isalive = false;
             Debug.Log("You died, LOL");
         }
         if (!isalive)
         {
-            state = PlayerState.Dead;
+            lol.gameObject.SetActive(true);
         }
-        Check();
     }
 
     void ManageMovement()
@@ -90,56 +91,30 @@ public class Player : MonoBehaviour
         Vector3 move = pa.GetMoveDirection();
         float extraSpeed = 0f;
 
-
-        if (cc.isGrounded && pa.IsSprinting())
+        // Handle sprinting logic
+        if (pa.IsSprinting())
         {
-            
-            velocity.y = -2f; // Small negative value to keep the player grounded
-            DashCooldownTime += Time.time;
-            jumpCount = 2;
-            hasDashedInAir = false;
             extraSpeed = 8f;
-        } else if(!cc.isGrounded && pa.IsSprinting())
-        {
-            state = PlayerState.Jumping;
-        }  
-        
+        }
 
-
-        if (cc.isGrounded && !pa.IsMoving())
+        // Jump logic
+        if (cc.isGrounded)
         {
-            state = PlayerState.Idle;
             // Reset vertical velocity when grounded
             velocity.y = -2f; // Small negative value to keep the player grounded
             DashCooldownTime += Time.time;
             jumpCount = 2;
             hasDashedInAir = false;
-    
-
-        }
-        else if (cc.isGrounded && pa.IsMoving())
-        {
-            state = PlayerState.Walking;
-            if (pa.IsSprinting())
-            {
-                state = PlayerState.Running;
-            }
-                // Reset vertical velocity when grounded
-                velocity.y = -2f; // Small negative value to keep the player grounded
-            DashCooldownTime += Time.time;
-            jumpCount = 2;
-            hasDashedInAir = false;
-        }
+        } 
 
         if (Input.GetButtonDown("Jump") && jumpCount > 0)
         {
             velocity.y = Mathf.Sqrt(jumpforce * -2f * gravity); // Jump logic
-            state = PlayerState.Jumping;
             jumpCount -= 1;
         }
         else
         {
-            
+            // Apply gravity when in the air
             velocity.y += gravity * Time.deltaTime;
         }
 
@@ -161,10 +136,9 @@ public class Player : MonoBehaviour
         move.y = velocity.y;
 
         // Apply movement
-        //Debug.Log(move * (speed + extraSpeed) * Time.deltaTime);
         cc.Move(move * (speed + extraSpeed) * Time.deltaTime);
 
-
+      
 
         // Check for dash input (Right Shift key)
         DashChecker(move);
@@ -172,80 +146,24 @@ public class Player : MonoBehaviour
 
     private void DashChecker(Vector3 moveDirection)
     {
-       // state = PlayerState.Dashing;
-        if (Input.GetMouseButtonDown(1) && cc.isGrounded)
+        if (Input.GetMouseButtonDown(1)|| Input.GetButtonDown("Fire2") && cc.isGrounded)
         {
-            state = PlayerState.Dashing;
             isDashing = true;
-            if (DashCooldownTime > DashCooldown)
+           if(DashCooldownTime > DashCooldown)
             {
                 dashValue = moveDirection.magnitude > 0 ? 1 : 0; // Start dash if the player is moving, otherwise set dash to 0
-
+                
             }
-        }
-        else if (Input.GetMouseButtonDown(1) && !cc.isGrounded && !hasDashedInAir)
+        } else if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2") && !cc.isGrounded && !hasDashedInAir)
         {
-            state = PlayerState.Dashing;
             if (DashCooldownTime > DashCooldown)
             {
                 isDashing = true;
                 dashValue = moveDirection.magnitude > 0 ? 1 : 0; // Start dash if the player is moving, otherwise set dash to 0
-                hasDashedInAir = true;
+                hasDashedInAir = true; 
             }
         }
     }
 
-    PlayerState GetState()
-    {
-        return state;
-    }
-    void Check()
-    {
-        PlayerState currentPlayerState = GetState();
-        switch (currentPlayerState)
-        {
-            case PlayerState.Idle:
-                An.Run(false); //we are turning on and off animations as per state.
-                An.Jump(false);
-                An.jogging(false);
-                An.Dashing(false);
-                Debug.Log("we be idle");
-                break;
-            case PlayerState.Running:
-                An.Jump(false);
-                An.jogging(false);
-                An.Dashing(false);
-                An.Run(true);
-                break;
-            case PlayerState.Jumping:
-                An.jogging(false);
-                An.Run(false);
-                An.Dashing(false); 
-                An.Jump(true);
-                //code
-                break;
-            case PlayerState.Walking:
-                An.Jump(false);
-                An.Run(false);
-                An.Dashing(false);
-                An.jogging(true);
-                break;
-            case PlayerState.Dashing:
-                An.Run(false);
-                An.Jump(false);
-                An.jogging(false);
-                An.Dashing(true);
-                break;
-            case PlayerState.Dead:
-                SceneManager.LoadScene("GAME OVER");
-                break;
-            default:
-                //code
-                break;
-
-        }
-    }
-
-
-
+   
 }

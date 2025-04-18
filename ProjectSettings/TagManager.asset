@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Toy
+  - Gun
+  - Enemy
   layers:
   - Default
   - TransparentFX
