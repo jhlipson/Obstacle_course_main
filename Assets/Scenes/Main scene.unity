@@ -4611,7 +4611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heal: 15
-  player: {fileID: 1687141592}
+  player: {fileID: 0}
 --- !u!65 &1232217565
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5571,7 +5571,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687141588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38a247be176f0f34e9bb5f888d97a25f, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a2c1df2bf3b92c409a342ad53dc8bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fliplook: 0
@@ -5584,40 +5584,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687141588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1651e602920334a9e9b67acc4ee7f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2340bf2639dba5540b7fcf5bec265aa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cc: {fileID: 0}
   health: {fileID: 1706270931}
-  speed: 6
+  speed: 1
   TimeinGame: 0
   curve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpforce: 1.1
+  jumpforce: 10
   gravity: -9.81
-  dashMulti: 8
+  dashMulti: 10
   dashTime: 0.4
   DashCooldown: 1
   hasDashedInAir: 0
@@ -6104,7 +6086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heal: 15
-  player: {fileID: 1687141592}
+  player: {fileID: 0}
 --- !u!65 &1836577648
 BoxCollider:
   m_ObjectHideFlags: 0

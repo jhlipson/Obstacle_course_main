@@ -2,11 +2,11 @@ using UnityEngine;
 public class Animations : MonoBehaviour
 {
     public Animator anim;
-    Player player;
+    OGPlayer player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindFirstObjectByType<Player>(); // Get the player script so we don't have to put it there ourselves. Be lazy, be better.
+        player = FindFirstObjectByType<OGPlayer>(); // Get the player script so we don't have to put it there ourselves. Be lazy, be better.
     }
 
     // Update is called once per frame
