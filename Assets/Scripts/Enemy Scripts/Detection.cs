@@ -4,28 +4,40 @@ public class Detection : MonoBehaviour
 {
     public Player player;
     public EnemyState enemyState;   
-    public bool detect;
     public float timedetected = 10f;
 
+    private bool playerInRange = false;
+
+    void Update()
+    {/*
+        if (!playerInRange && timedetected > 0f)
+        {
+            timedetected -= Time.deltaTime;
+            if (timedetected <= 0f)
+            {
+                enemyState.SetState(EnemyState.BadGuystate.Idle);
+                Debug.Log("Timeout — going back to IDLE");
+            }
+        } */
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-
-      EnemyState.BadGuystate currentstate = enemyState.GetState();
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            currentstate = EnemyState.BadGuystate.Detect;
-            detect = true;
+            playerInRange = true;
+            enemyState.SetState(EnemyState.BadGuystate.Follow);
             timedetected = 10f;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+   /* private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            detect = true;
-            timedetected -= Time.time;
-        }
-    }
+            playerInRange = false;
+            enemyState.SetState(EnemyState.BadGuystate.Detect);
+        } 
+    } */
+
 }
