@@ -9,9 +9,16 @@ public class Enemy : MonoBehaviour
     public Transform destinationC;
     private NavMeshAgent agent;
     private Detection detection;
+    private FightDetection fightDetection;  
     private Transform currentDestination;
+    public Transform shootorigin;
     public EnemyState enemyState;
- 
+    public float timedetection = 10f;
+    public float damage = 20f;
+    public float range = 20f;
+    public float resettime;
+    public AudioSource Shootsound;
+    Player pp;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -19,8 +26,9 @@ public class Enemy : MonoBehaviour
         currentDestination = destinationA;
         agent.destination = currentDestination.position;
         enemyState = GetComponent<EnemyState>();
-      
-
+        resettime = timedetection;
+        fightDetection = GetComponentInChildren<FightDetection>();  
+        pp = FindFirstObjectByType<Player>();
     }
 
     private void Update()
@@ -31,10 +39,10 @@ public class Enemy : MonoBehaviour
     //That means using public booleans I'd say to turn stuff off and on, that's your best bet.
     public void walking (bool walk)
     {
-        EnemyState.BadGuystate currentstate = enemyState.GetState();
+        
         if (walk)
         {
-            currentstate = EnemyState.BadGuystate.Idle;
+            agent.destination = currentDestination.position; 
             if (Vector3.Distance(transform.position, currentDestination.position) < dist_threshold)
             {
                 if (currentDestination == destinationA)
@@ -63,6 +71,60 @@ public class Enemy : MonoBehaviour
             agent.destination = detection.player.transform.position;
         }
     }
-    
+
+    public void Detect(bool detect) 
+    {
+        EnemyState.BadGuystate currentstate = enemyState.GetState();
+        if (detect && timedetection > 0)
+        {
+
+            Debug.Log("The follow option is false");
+            agent.destination = detection.player.transform.position;
+            timedetection -= Time.deltaTime;
+            if (timedetection <= 0)
+            {
+                timedetection = resettime;
+                Debug.Log("We be idle");
+                enemyState.SetState(EnemyState.BadGuystate.Idle);
+            }
+        }
+            
+        
+    }
+
+    public void Shoot(bool shoot)
+    {
+        RaycastHit hit;
+        agent.destination = detection.player.transform.position;
+        Vector3 direction = (fightDetection.player.transform.position - shootorigin.position).normalized;
+        if (Physics.Raycast(shootorigin.position, direction, out hit, range))
+        { //We are getting first the origin of the shot, then the direction,
+            //We are using out hit to tell us if the ray cast does hit something to store it.
+            //finally, we are feeding the raycast our range for the shot.
+            if (hit.collider.CompareTag("Player"))
+            {
+                Debug.Log("Hit the player!");
+                pp.TakeDamage(damage); // feed it our enemy's damage on a hit.
+                Shootsound.Play();
+            }
+            else
+            {
+                Debug.Log("Raycast hit: " + hit.collider.name);
+            }
+        }
+        else
+        {
+            Debug.Log("Missed!");
+        }
+
+    }
+
+    public void Death(bool death)
+    {
+        if (death)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
 
