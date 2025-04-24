@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     public float resettime;
     public AudioSource Shootsound;
     Player pp;
+    float cooldown;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -95,27 +96,40 @@ public class Enemy : MonoBehaviour
     public void Shoot(bool shoot)
     {
         RaycastHit hit;
-        agent.destination = detection.player.transform.position;
-        Vector3 direction = (fightDetection.player.transform.position - shootorigin.position).normalized;
-        if (Physics.Raycast(shootorigin.position, direction, out hit, range))
-        { //We are getting first the origin of the shot, then the direction,
-            //We are using out hit to tell us if the ray cast does hit something to store it.
-            //finally, we are feeding the raycast our range for the shot.
-            if (hit.collider.CompareTag("Player"))
-            {
-                Debug.Log("Hit the player!");
-                pp.TakeDamage(damage); // feed it our enemy's damage on a hit.
-                Shootsound.Play();
-            }
-            else
-            {
-                Debug.Log("Raycast hit: " + hit.collider.name);
-            }
-        }
-        else
+        
+        agent.destination = fightDetection.player.transform.position;
+        if(shoot && timedetection > 0)
         {
-            Debug.Log("Missed!");
+            cooldown += Time.deltaTime;
+            if ((cooldown >= 3f))
+            {
+                Vector3 direction = (fightDetection.player.transform.position - shootorigin.position).normalized;
+                if (Physics.Raycast(shootorigin.position, direction, out hit, range))
+                { //We are getting first the origin of the shot, then the direction,
+                    Shootsound.Play();
+                    Debug.Log("Shooting!");
+                    //We are using out hit to tell us if the ray cast does hit something to store it.
+                    //finally, we are feeding the raycast our range for the shot.
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        Debug.Log("Hit the player!");
+                        cooldown = 0f;
+                        pp.TakeDamage(damage); // feed it our enemy's damage on a hit.
+                        Shootsound.Play();
+                    }
+                    else
+                    {
+                        Debug.Log("Raycast hit: " + hit.collider.name);
+                    }
+                }
+                else
+                {
+                    Debug.Log("Missed!");
+                }
+            }
+           
         }
+      
 
     }
 

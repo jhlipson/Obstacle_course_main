@@ -18,6 +18,7 @@ public class EnemyState : MonoBehaviour
         Idle,
         Detect,
         Follow,
+        Disengage,
         Attack,
         Dead,
     }
@@ -43,6 +44,9 @@ public class EnemyState : MonoBehaviour
                 music[1].SetActive(false);
                 enemy.walking(true);
                 Debug.Log("Walking Again");
+                break;
+            case BadGuystate.Disengage:
+
                 break;
             case BadGuystate.Detect:
                 music[1].SetActive(true);

@@ -20,7 +20,7 @@ public class EnemyTakeDamage : MonoBehaviour
     {
         enemyHealth -= damage;
        
-        enemyState.SetState(EnemyState.BadGuystate.Follow);
+        enemyState.SetState(EnemyState.BadGuystate.Attack);
         if (enemyHealth <= 0)
         {
             enemyState.SetState(EnemyState.BadGuystate.Dead);

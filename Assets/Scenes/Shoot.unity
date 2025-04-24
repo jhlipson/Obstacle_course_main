@@ -9898,6 +9898,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  otherdetecter: {fileID: 644633902}
+  tracking: 0
   timedetected: 10
 --- !u!1 &1862370137
 GameObject:
@@ -10066,8 +10068,8 @@ MonoBehaviour:
   shootorigin: {fileID: 1848227402}
   enemyState: {fileID: 1862370143}
   timedetection: 10
-  damage: 10
-  range: 20
+  damage: 20
+  range: 40
   resettime: 0
   Shootsound: {fileID: 1653024526}
 --- !u!195 &1862370145
