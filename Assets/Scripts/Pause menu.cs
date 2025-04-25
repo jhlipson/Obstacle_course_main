@@ -17,10 +17,9 @@ public class Pausemenu : MonoBehaviour
     {
         if(Input.GetButtonDown("Cancel"))
         {
-            if (ispaused)
-            {
-                ResumeGame();
-            }
+            
+            PauseGame();
+            
         }
     }
 
@@ -30,7 +29,7 @@ public class Pausemenu : MonoBehaviour
         pause.SetActive(true); //turning the UI on and off. 
         Cursor.visible = true;
         Time.timeScale = 0f; // actually pausing the game.
-        ispaused = true;
+       
     }
 
    public void ResumeGame()
@@ -39,6 +38,6 @@ public class Pausemenu : MonoBehaviour
         Time.timeScale = 1f;
         Cursor.visible = false;
         blackscreen.SetActive(false);
-        ispaused = false;
+    
     }
 }

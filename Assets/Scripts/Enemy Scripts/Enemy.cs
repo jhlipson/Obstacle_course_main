@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour
         if(shoot && timedetection > 0)
         {
             cooldown += Time.deltaTime;
-            if ((cooldown >= 3f))
+            if ((cooldown >= 1f))
             {
                 Vector3 direction = (fightDetection.player.transform.position - shootorigin.position).normalized;
                 if (Physics.Raycast(shootorigin.position, direction, out hit, range))

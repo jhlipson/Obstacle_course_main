@@ -7,7 +7,7 @@ public class Respawn : MonoBehaviour
     public Vector3 respawnpoint;
    void OnTriggerEnter (Collider other)
     {
-        Player player = hero.GetComponent<Player>();
+        OGPlayer player = hero.GetComponent<OGPlayer>();
         if(other.gameObject.CompareTag("Player"))
         {
             Debug.Log("working");
