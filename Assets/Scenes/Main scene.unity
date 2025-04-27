@@ -201,11 +201,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411155874931413273, guid: 953c72a24ebd1224096a1aacf88c1f5f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 81.399994
+      value: 81.400024
       objectReference: {fileID: 0}
     - target: {fileID: 1411155874931413273, guid: 953c72a24ebd1224096a1aacf88c1f5f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50.199997
+      value: -50.19995
       objectReference: {fileID: 0}
     - target: {fileID: 1411155874931413273, guid: 953c72a24ebd1224096a1aacf88c1f5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3265,7 +3265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &922147057
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3667,7 +3667,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3686,7 +3686,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: c41005c129ba4d66911b75229fd70b45, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -5589,16 +5589,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cc: {fileID: 0}
   health: {fileID: 1706270931}
-  speed: 1
+  speed: 7
   TimeinGame: 0
   curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpforce: 10
-  gravity: -9.81
+  jumpforce: 4
+  gravity: -10
   dashMulti: 10
   dashTime: 0.4
   DashCooldown: 1
@@ -6176,7 +6194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}

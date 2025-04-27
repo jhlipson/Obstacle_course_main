@@ -6,7 +6,7 @@ public class ProxyCam : MonoBehaviour
 
     public Transform[] points;
     public GameObject main;
-    Player _player;
+    OGPlayer _player;
     public float t = 0f;
     Vector3 proxyPos;
     Vector3 playerPos;
@@ -16,7 +16,7 @@ public class ProxyCam : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _player = FindFirstObjectByType<Player>();
+        _player = FindFirstObjectByType<OGPlayer>();
         _cam = GetComponentInChildren<Camera>();
         
         proxyPos = transform.position;

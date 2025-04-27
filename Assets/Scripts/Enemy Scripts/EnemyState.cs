@@ -46,7 +46,9 @@ public class EnemyState : MonoBehaviour
                 Debug.Log("Walking Again");
                 break;
             case BadGuystate.Disengage:
-
+                music[1].SetActive(true);
+                music[0].SetActive(false);
+                enemy.Disengange(true);
                 break;
             case BadGuystate.Detect:
                 music[1].SetActive(true);
@@ -67,6 +69,7 @@ public class EnemyState : MonoBehaviour
             case BadGuystate.Dead:
                 enemy.Death(true);  
                 break;
+ 
         }
     }
 

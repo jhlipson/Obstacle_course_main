@@ -4,17 +4,17 @@ using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI winnertext;
-    Player player;
+    OGPlayer player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindFirstObjectByType<Player>();
+        player = FindFirstObjectByType<OGPlayer>();
         //We are only activating this when the Player isn't on. 
     }
 
     // Update is called once per frame
     void Update()
-    {/*
+    {
         string minutes = Mathf.Floor(player.TimeinGame / 60).ToString("00");
         //Returns the largest interger smaller or equal to F. 
         //Attempting to access the time of spent in the game and show how long the scene has been going on for.
@@ -26,6 +26,6 @@ public class Timer : MonoBehaviour
             SceneManager.LoadScene("Main Scene");
             //Once again, we are accessing the scene management. 
             
-        } */
+        } 
     }
 }

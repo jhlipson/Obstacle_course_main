@@ -15,11 +15,12 @@ public class Enemy : MonoBehaviour
     public EnemyState enemyState;
     public float timedetection = 10f;
     public float damage = 20f;
+    public float attackthreshold;
     public float range = 20f;
     public float resettime;
     public AudioSource Shootsound;
     Player pp;
-    float cooldown;
+ float cooldown; // to control how fast the enemy can fire.
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -101,7 +102,7 @@ public class Enemy : MonoBehaviour
         if(shoot && timedetection > 0)
         {
             cooldown += Time.deltaTime;
-            if ((cooldown >= 1f))
+            if ((cooldown >= attackthreshold))
             {
                 Vector3 direction = (fightDetection.player.transform.position - shootorigin.position).normalized;
                 if (Physics.Raycast(shootorigin.position, direction, out hit, range))
@@ -132,6 +133,59 @@ public class Enemy : MonoBehaviour
       
 
     }
+
+    public void Disengange(bool disengange)
+    {
+        if (!disengange) return;
+        RaycastHit hit;
+        if (disengange)
+        {
+            Vector3 newpos = agent.destination - detection.player.transform.position;
+            Vector3 directiontowardplayer = detection.player.transform.position - transform.position;
+            //variable needed for rotation.
+            directiontowardplayer.y = 0;
+            //make sure it does not rotate on the Y axis.
+            Quaternion lookrotation = Quaternion.LookRotation(directiontowardplayer);
+            //plug in the rotation with the quaternion function.
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookrotation, Time.deltaTime * 5f);
+            //make it smooth and functional with a combination of Slerp and Time.deltatTime.
+            Vector3 runningpos = transform.position + newpos * 2f;
+            agent.SetDestination(runningpos);
+            cooldown += Time.deltaTime;
+            Destroy(fightDetection); //We want to do this because it will conflict with the Disengange and attack.
+            //When the enemy is at low health we only want him to be attacking and or running away while attack.
+            if ((cooldown >= 1f)) //not using threshold because the enemy is supposed to be desperate.
+            {
+                Vector3 direction = (detection.player.transform.position - shootorigin.position).normalized;
+                if (Physics.Raycast(shootorigin.position, direction, out hit, range))
+                { //We are getting first the origin of the shot, then the direction,
+                    Shootsound.Play();
+                    Debug.Log("Shooting!");
+                    //We are using out hit to tell us if the ray cast does hit something to store it.
+                    //finally, we are feeding the raycast our range for the shot.
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        Debug.Log("Hit the player!");
+                        cooldown = 0f;
+                        pp.TakeDamage(damage); // feed it our enemy's damage on a hit.
+                        Shootsound.Play();
+                    }
+                    else
+                    {
+                        Debug.Log("Raycast hit: " + hit.collider.name);
+                    }
+                }
+                else
+                {
+                    Debug.Log("Missed!");
+                }
+            }
+            //This is so that the enemy starts running away when their health is low, but they will be in a constant
+            //state of panic.
+
+        }
+    }
+
 
     public void Death(bool death)
     {

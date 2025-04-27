@@ -3,11 +3,11 @@ using UnityEngine;
 public class Heal : MonoBehaviour
 {
     public float heal = 15f;
-   public Player player;
+   public OGPlayer player;
 
     void Start()
     {
-        player = FindFirstObjectByType<Player>();
+        player = FindFirstObjectByType<OGPlayer>();
     }
     private void OnTriggerEnter(Collider other)
     {

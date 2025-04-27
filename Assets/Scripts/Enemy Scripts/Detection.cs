@@ -3,17 +3,24 @@ using UnityEngine;
 public class Detection : MonoBehaviour
 {
     public Player player;
-    public EnemyState enemyState;   
-    public float timedetected = 10f;
+    public EnemyState enemyState;
+    public GameObject fighdetection;
+  
 
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            
-            enemyState.SetState(EnemyState.BadGuystate.Follow);
-            timedetected = 10f;
+            if(fighdetection != null)
+            {
+                enemyState.SetState(EnemyState.BadGuystate.Follow);
+        
+            } else
+            {
+                enemyState.SetState(EnemyState.BadGuystate.Disengage);  
+            }
+       
         }
     }
 
